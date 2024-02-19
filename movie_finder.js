@@ -1,5 +1,4 @@
-//import {getRandomMovie, getSelectedGenre} from '/helpers.js'
-const tmdbKey = '';
+const tmdbKey = 'ca41e721fea96a9ee4f3be00e7f9a14e';
 const tmdbBaseUrl = 'https://api.themoviedb.org/3';
 const playBtn = document.getElementById('playBtn');
 
@@ -12,9 +11,9 @@ try {
   const response = await fetch(urlToFetch);
   if (response.ok){
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
+    //console.log(jsonResponse);
     const genres = jsonResponse.genres;
-    console.log(genres);
+    //console.log(genres);
     return genres;
   }
 }
@@ -23,19 +22,20 @@ catch (error){
 }
   
 };
-
 const getMovies = async () => {
+  //return the selected genre
   const selectedGenre = getSelectedGenre();
-  const discoverMovieEndpoint = '/discover/movie'
+  const discoverMovieEndpoint = '/discover/movie';
   const requestParams = `?api_key=${tmdbKey}&with_genres=${selectedGenre}`;
   const urlToFetch = `${tmdbBaseUrl}${discoverMovieEndpoint}${requestParams}`;
   try{
     const response = await fetch(urlToFetch);
     if (response.ok){
-      const jsonResponse = response.json();
+      const jsonResponse = await response.json();
       console.log(jsonResponse);
       const movies = jsonResponse.results;
-      console.log(movies);
+      //console.log(movies);
+      //console.log('getMovies has been called');
       return movies;
     }
   }
@@ -73,11 +73,12 @@ const showRandomMovie = async () => {
   if (movieInfo.childNodes.length > 0) {
     clearCurrentMovie();
   };
-  console.log('hello there');
   const movies = await getMovies();
+  console.log(movies);
   const randomMovie = await getRandomMovie(movies);
   const info = await getMovieInfo(randomMovie);
   displayMovie(info);
+  
 };
 
 getGenres().then(populateGenreDropdown);
